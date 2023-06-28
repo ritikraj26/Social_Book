@@ -8,7 +8,9 @@ from .models import Profile
 
 @login_required(login_url='signin')
 def index(request):
-    return render(request, 'index.html')
+    user_object = User.objects.get(username=request.user.username)
+    user_profile = Profile.objects.get(user=user_object)
+    return render(request, 'index.html',{'user_profile':user_profile})
 
 
 @login_required(login_url='signin')
@@ -37,6 +39,11 @@ def settings(request):
             user_profile.save()
         return redirect(request,'settings')
     return render(request, 'setting.html', {'user_profile': user_profile})
+
+
+@login_required(login_url='signin')
+def upload(reqeust):
+    return HttpResponse('<h1>Upload View</h1>')
 
 
 def signup(request):
